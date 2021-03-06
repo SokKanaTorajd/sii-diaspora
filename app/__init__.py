@@ -47,11 +47,53 @@ def dashboard():
 
 @app.route('/data-barang-inventaris')
 def data_inv():
-	return render_template('data-barang-inventaris.html')
+	inv_data = database.getDataInv()
+	return render_template('data-barang-inventaris.html', data=inv_data)
 
-@app.route('/input-data-inventaris')
+@app.route('/input-data-inventaris', methods=['GET', 'POST'])
 def input_inv():
-	return render_template('input-data-inventaris.html')
+	if request.method == 'POST':
+		kode = request.form['kode_barang']
+		nama = request.form['nama_barang']
+		jenis = request.form['jenis_barang']
+		asal = request.form['asal_barang']
+		tahun = int(request.form['tahun'])
+		jumlah = int(request.form['jumlah'])
+		harga = int(request.form['harga'])
+		tempat = request.form['tempat']
+		data = (kode, nama, jenis, asal, tahun, jumlah, harga, tempat)
+		database.inputDataInv(data)
+		return redirect(url_for('data_inv'))
+	else:
+		return render_template('input-data-inventaris.html')
+
+@app.route('/update-barang-inventaris/<kode_barang>', methods=['GET', 'POST'])
+def update_inv(kode_barang):
+	if request.method == 'GET':
+		data = database.getDataInvByKode(kode_barang)
+		return render_template('update-data-inventaris.html', data=data)
+
+	else:
+		kode = request.form['kode_barang']
+		nama = request.form['nama_barang']
+		jenis = request.form['jenis_barang']
+		asal = request.form['asal_barang']
+		tahun = int(request.form['tahun'])
+		jumlah = int(request.form['jumlah'])
+		harga = int(request.form['harga'])
+		tempat = request.form['tempat']
+		data = (nama, jenis, asal, tahun, jumlah , harga, tempat, kode)
+		database.updateDataInv(data)
+		return redirect(url_for('data_inv'))
+
+@app.route('/delete-barang-inventaris/<kode_barang>')
+def delete_inv(kode_barang):
+	database.deleteDataInv(kode_barang)
+	return redirect(url_for('data_inv'))
+
+@app.route('/penggunaan-barang-inventaris')
+def penggunaan_inv():
+	return render_template('penggunaan-barang-inventaris.html')
 
 @app.route('/cetak-data-inventaris')
 def cetak_inv():
@@ -64,6 +106,10 @@ def data_non_inv():
 @app.route('/input-data-non-inventaris')
 def input_non_inv():
 	return render_template('input-data-non-inventaris.html')
+
+@app.route('/penggunaan-barang-non-inventaris')
+def penggunaan_non_inv():
+	return render_template('penggunaan-barang-non-inventaris.html')
 
 @app.route('/cetak-data-non-inventaris')
 def cetak_non_inv():

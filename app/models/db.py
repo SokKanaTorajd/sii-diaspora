@@ -31,11 +31,44 @@ class Database():
         self.closeDB()
         return login_data
 
+    def getDataInv(self):
+        self.openDB()
+        q = "SELECT * FROM barang"
+        inv_data = []
+        self.cursor.execute(q)
+        for kode, jenis, asal, tahun, jumlah, harga, stok, tempat in self.cursor.fetchall():
+            inv_data.append((kode, jenis, asal, tahun, jumlah, harga, stok, tempat))
+        self.closeDB()
+        return inv_data
+
     def inputDataInv(self, input_data):
         self.openDB()
         q = "INSERT INTO \
             barang (kd_obat, nm_obat, jenis_obat, asal, tahun, stok, harga, tempat) \
-            values ('{}', '{}', '{}', '{}', {}, {}, {}, '{}')"%(input_data)
+            values ('%s', '%s', '%s', '%s', %i, %i, %i, '%s')"%(input_data)
+        self.cursor.execute(q)
+        self.db.commit()
+        self.closeDB()
+
+    def getDataInvByKode(self, kode):
+        self.openDB()
+        q = "SELECT * FROM barang WHERE kd_obat='{}'".format(kode)
+        self.cursor.execute(q)
+        data = self.cursor.fetchone()
+        return data
+
+    def updateDataInv(self, data):
+        self.openDB()
+        q = "UPDATE barang SET \
+            nm_obat='%s', jenis_obat='%s', asal='%s', tahun=%i, stok=%i, harga=%i, tempat='%s' \
+            WHERE kd_obat='%s'"%(data)
+        self.cursor.execute(q)
+        self.db.commit()
+        self.closeDB()
+
+    def deleteDataInv(self, kode):
+        self.openDB()
+        q = "DELETE FROM barang WHERE kd_obat='{}'".format(kode)
         self.cursor.execute(q)
         self.db.commit()
         self.closeDB()
@@ -49,7 +82,7 @@ class Database():
         self.db.commit()
         self.closeDB()
 
-    def updateDataInv(self, input_data):
+    def updateDataNonInv(self, input_data):
         self.openDB()
         q = ""
         self.cursor.execute(q)

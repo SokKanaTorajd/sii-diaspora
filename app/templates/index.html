@@ -2,6 +2,7 @@
 {% block title %} Aplikasi Inventaris Barang Dinas Pemuda dan Olahraga Kota Yogyakarta {% endblock %}
 
 {% block content %}
+    {% if not session['username'] %}
     <div class="container">
         <div class="card text-white bg-primary mb-3" style="width: 20em;margin:0 auto;">
             <img src="static/img/logo_dispora2.png" class="card-img-top" 
@@ -27,4 +28,5 @@
             </div>
         </div>
     </div>
+    {% endif %}
 {% endblock %}
