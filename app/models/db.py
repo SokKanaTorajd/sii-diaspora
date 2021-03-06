@@ -55,6 +55,7 @@ class Database():
         q = "SELECT * FROM barang WHERE kd_obat='{}'".format(kode)
         self.cursor.execute(q)
         data = self.cursor.fetchone()
+        self.closeDB()
         return data
 
     def updateDataInv(self, data):
@@ -69,6 +70,39 @@ class Database():
     def deleteDataInv(self, kode):
         self.openDB()
         q = "DELETE FROM barang WHERE kd_obat='{}'".format(kode)
+        self.cursor.execute(q)
+        self.db.commit()
+        self.closeDB()
+
+    def getKondisi(self):
+        self.openDB()
+        q = "SELECT * FROM kondisi"
+        self.cursor.execute(q)
+        data = [(kode, kondisi) for kode, kondisi in self.cursor.fetchall()]
+        self.closeDB()
+        return data
+
+    def inputPenggunaanInv(self, data):
+        self.openDB()
+        q = "INSERT INTO eoq (kd_obat, kd_kondisi, barang_rusak, keterangan) \
+            values ('%s', '%s', %i, '%s')"%(data)
+        self.cursor.execute(q)
+        self.db.commit()
+        self.closeDB()
+    
+    def getKondisiBarang(self):
+        self.openDB()
+        q = "SELECT * FROM eoq"
+        self.cursor.execute(q)
+        data = []
+        for id, kd_barang, kd_kondisi, jumlah, ket in self.cursor.fetchall():
+            data.append((id, kd_barang, kd_kondisi, jumlah, ket))
+        self.closeDB()
+        return data
+    
+    def deletePenggunaanInv(self, id):
+        self.openDB()
+        q = "DELETE FROM eoq WHERE id={}".format(id)
         self.cursor.execute(q)
         self.db.commit()
         self.closeDB()

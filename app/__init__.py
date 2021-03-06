@@ -91,13 +91,31 @@ def delete_inv(kode_barang):
 	database.deleteDataInv(kode_barang)
 	return redirect(url_for('data_inv'))
 
-@app.route('/penggunaan-barang-inventaris')
+@app.route('/penggunaan-barang-inventaris', methods=['GET', 'POST'])
 def penggunaan_inv():
-	return render_template('penggunaan-barang-inventaris.html')
+	if request.method == 'GET':
+		kondisi = database.getKondisi()
+		data = database.getDataInv()
+		return render_template('penggunaan-barang-inventaris.html', kondisi=kondisi, data=data)
+	else:
+		kode = request.form['kode_barang']
+		kondisi = request.form['kondisi']
+		jumlah = int(request.form['jumlah'])
+		keterangan = request.form['keterangan']
+		data = (kode, kondisi, jumlah, keterangan)
+		database.inputPenggunaanInv(data)
+		return redirect(url_for('laporan_inv'))
 
-@app.route('/cetak-data-inventaris')
-def cetak_inv():
-	return render_template('cetak-data-inventaris.html')
+@app.route('/laporan-inventaris', methods=['GET'])
+def laporan_inv():
+	if request.method=='GET':
+		data = database.getKondisiBarang()
+		return render_template('laporan-barang-inventaris.html', data=data)
+	
+@app.route('/delete-penggunaan-inventaris/<id>')
+def delete_penggunaan_inv(id):
+	database.deletePenggunaanInv(id)
+	return redirect(url_for('laporan_inv'))
 
 @app.route('/data-barang-non-inventaris')
 def data_non_inv():

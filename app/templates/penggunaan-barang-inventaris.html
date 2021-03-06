@@ -1,2 +1,43 @@
 {% extends './layout/layout.html' %}
-{% block title %}  {% endblock %}
+{% block title %} DATA PENGGUNAAN INVENTARIS {% endblock %}
+
+{% block main %}
+<div class="d-flex justify-content flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+    <h1 class="h2">Input Data Penggunaan Barang Inventaris - DISPORA JOGJA</h1>
+</div>
+<hr>
+<form method="POST">
+    <div class="form-group">
+        <label>Kode Barang Inventaris</label>
+        <select class="custom-select" name="kode_barang">
+            <option selected>Klik untuk memilih</option>
+            {% for item in data%}
+            <option value="{{ item[0] }}"required>{{ item[0] }} - {{ item[1] }}</option>
+            {% endfor %}
+          </select>
+    </div>
+    <div class="form-group">
+        <label>Kondisi Barang</label>
+        <select class="custom-select" name="kondisi">
+            <option selected>Klik untuk memilih</option>
+            {% for k in kondisi%}
+            <option value="{{ k[0] }}" required>{{ k[1] }}</option>
+            {% endfor %}
+          </select>
+    </div>
+    <div class="form-group">
+        <label>Jumlah Barang Rusak</label>
+        <input type="text" class="form-control" name="jumlah" required>
+    </div>
+    <div class="form-group">
+        <label>Keterangan</label>
+        <input type="text" class="form-control" name="keterangan" required>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary" value="simpan">Simpan</button>
+        <a href="{{ url_for('laporan_inv')}}"></a>
+            <button class="btn btn-secondary">Cek Laporan</button>
+        </a>
+    </div>
+</form>
+{% endblock main%}
