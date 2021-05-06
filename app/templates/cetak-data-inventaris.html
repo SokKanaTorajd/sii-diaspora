@@ -1,2 +1,79 @@
-{% extends './layout/layout.html' %}
-{% block title %} Cetak Data Barang Inventaris {% endblock %}
+<!DOCTYPE html>
+
+<html>
+    <title>
+        {% block title %} Cetak Data Barang Inventaris {% endblock %}
+    </title>
+    {% block content %}
+    <div class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+        <h1 class="h1 text-center" style="text-align: center;">Laporan Inventaris</h1>
+        <h2 class="h2 text-center" style="text-align: center;">Dinas Pemuda dan Olahraga Kota Yogyakarta</h2>
+    </div>
+    <hr>
+    <div class="table-responsive-md">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">KODE BARANG</th>
+                    <th scope="col">NAMA BARANG</th>
+                    <th scope="col">JENIS/MERK/TYPE</th>
+                    <th scope="col">ASAL/CARA MEMPEROLEH</th>
+                    <th scope="col">TAHUN</th>
+                    <th scope="col">JUMLAH</th>
+                    <th scope="col">HARGA</th>
+                    <th scope="col">TEMPAT</th>
+                    <th scope="col">KONDISI BARANG</th>
+                    <th scope="col">JUMLAH BARANG RUSAK</th>
+                    <th scope="col">KETERANGAN</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for d in data %}
+                <tr>
+                    <td>{{ d[0] }}</td>
+                    <td>{{ d[1] }}</td>
+                    <td>{{ d[2] }}</td>
+                    <td>{{ d[3] }}</td>
+                    <td>{{ d[4] }}</td>
+                    <td>{{ d[5] }}</td>
+                    <td>{{ d[6] }}</td>
+                    <td>{{ d[7] }}</td>
+                    <td>{{ d[8] }}</td>
+                    <td>{{ d[9] }}</td>
+                    <td>{{ d[10] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <br>
+    <div class="table-responsive-sm">
+        <table style="float: right;">
+            <tr>
+                <td>Yogyakarta, {{ tanggal }}</td>
+            </tr>
+            <tr>
+                <td>Mengetahui,</td>
+            </tr>
+            <tr>
+                <td>
+                    <em>&nbsp;</em>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <em>&nbsp;</em>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <em>&nbsp;</em>
+                </td>
+            </tr>
+            <tr>
+                <td>Sekretaris</td>
+            </tr>
+    </div>
+    {% endblock content %}
+</html>
