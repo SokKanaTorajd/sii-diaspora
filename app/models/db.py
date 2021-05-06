@@ -92,11 +92,25 @@ class Database():
     
     def getKondisiBarang(self):
         self.openDB()
-        q = "SELECT * FROM eoq"
+        q = "SELECT id, kd_obat, kondisi, barang_rusak, keterangan \
+            FROM eoq, kondisi WHERE kondisi.kd_kondisi=eoq.kd_kondisi"
         self.cursor.execute(q)
         data = []
-        for id, kd_barang, kd_kondisi, jumlah, ket in self.cursor.fetchall():
-            data.append((id, kd_barang, kd_kondisi, jumlah, ket))
+        for id, kd_barang, kondisi, jumlah, ket in self.cursor.fetchall():
+            data.append((id, kd_barang, kondisi, jumlah, ket))
+        self.closeDB()
+        return data
+
+    def cetakLaporanInv(self):
+        self.openDB()
+        q = "SELECT barang.kd_obat, nm_obat, jenis_obat, asal, tahun, stok, harga, \
+                tempat, kondisi, barang_rusak, keterangan \
+            FROM barang, eoq, kondisi \
+            WHERE barang.kd_obat=eoq.kd_obat and kondisi.kd_kondisi=eoq.kd_kondisi"
+        self.cursor.execute(q)
+        data = []
+        for kd, nm, jns, asal, thn, stok, hrg, tmpt, knd, rsk, ket in self.cursor.fetchall():
+            data.append((kd, nm, jns, asal, thn, stok, hrg, tmpt, knd, rsk, ket)) 
         self.closeDB()
         return data
     
