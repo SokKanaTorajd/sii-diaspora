@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request,  \
 	redirect, url_for, session
+# from flask_weasyprint import HTML, render_pdf
 from app.models.db import Database
+from datetime import date
 
 app = Flask(__name__)
 app.secret_key='f57037d4e48dfd249bc41ef33e15b66a'
@@ -33,7 +35,7 @@ def index():
 			if username==login_data[1] and password==login_data[2]:
 				session['name'] = login_data[0]
 				session['username'] = login_data[1]
-				return render_template('dashboard.html', user=login_data[0])
+				return redirect(url_for('dashboard'))
 
 		except TypeError:
 			error = 'Invalid username or password! Please try again.'
@@ -117,6 +119,18 @@ def delete_penggunaan_inv(id):
 	database.deletePenggunaanInv(id)
 	return redirect(url_for('laporan_inv'))
 
+@app.route('/cetak-laporan-inventaris', methods=['GET'])
+def cetak_inventaris():
+	if request.method=='GET':
+		data = database.cetakLaporanInv()
+		tanggal = date.today()
+		tanggal = tanggal.strftime("%d %b %Y")
+		return render_template('cetak-data-inventaris.html', data=data, tanggal=tanggal)
+
+# @app.route('/laporan-inventaris.pdf')
+# def cetak_pdf():
+# 	return render_pdf(url_for('cetak_inventaris'))
+
 @app.route('/data-barang-non-inventaris')
 def data_non_inv():
 	return render_template('data-barang-non-inventaris.html')
@@ -128,6 +142,10 @@ def input_non_inv():
 @app.route('/penggunaan-barang-non-inventaris')
 def penggunaan_non_inv():
 	return render_template('penggunaan-barang-non-inventaris.html')
+
+@app.route('/laporan-non-inventaris')
+def laporan_non_inv():
+	return render_template('laporan-barang-non-inventaris.html')
 
 @app.route('/cetak-data-non-inventaris')
 def cetak_non_inv():
