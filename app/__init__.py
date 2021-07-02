@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request,  \
 	redirect, url_for, session
-# from flask_weasyprint import HTML, render_pdf
+from flask_weasyprint import HTML, render_pdf
 from app.models.db import Database
 from datetime import date
 
@@ -125,6 +125,8 @@ def cetak_inventaris():
 		data = database.cetakLaporanInv()
 		tanggal = date.today()
 		tanggal = tanggal.strftime("%d %b %Y")
+		# laporan = render_template('cetak-data-inventaris.html', data=data, tanggal=tanggal)
+		# return render_pdf(HTML(string=laporan, base_url=request.build_absolute_uri()))
 		return render_template('cetak-data-inventaris.html', data=data, tanggal=tanggal)
 
 # @app.route('/laporan-inventaris.pdf')
@@ -133,7 +135,8 @@ def cetak_inventaris():
 
 @app.route('/data-barang-non-inventaris')
 def data_non_inv():
-	return render_template('data-barang-non-inventaris.html')
+	data = database.getDataNonInv()
+	return render_template('data-barang-non-inventaris.html', data=data)
 
 @app.route('/input-data-non-inventaris')
 def input_non_inv():
