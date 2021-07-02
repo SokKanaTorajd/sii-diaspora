@@ -121,6 +121,16 @@ class Database():
         self.db.commit()
         self.closeDB()
 
+    def getDataNonInv(self):
+        self.openDB()
+        q = "SELECT * FROM barangnon"
+        data = []
+        self.cursor.execute(q)
+        for kode, nama, jenis, asal, tgl_masuk, stok, harga, tempat in self.cursor.fetchall():
+            data.append((kode, nama, jenis, asal, tgl_masuk, stok, harga, tempat))
+        self.closeDB()
+        return data
+
     def inputDataNonInv(self, input_data):
         self.openDB()
         q = "INSERT INTO \
