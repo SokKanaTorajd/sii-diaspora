@@ -1,0 +1,10 @@
+1. dashboard referensi (checked)
+-- pahamin code, ATM ke sii
+-- yg dilihat admin --> jumlah user
+-- yg dilihat user --> jumlah total barang, barang keluar, barang masuk
+
+2. nunggu database baru. import trus ganti query
+
+3. manage user's login.
+
+!!! output laporan masih crash di pdf-nya.
